@@ -1,0 +1,235 @@
+*{margin:0;padding:0;box-sizing:border-box}
+
+@font-face{
+font-family:"PressStart";
+src:url("../assets/fonts/PressStart2P.ttf") format("truetype");
+font-weight:normal;
+font-style:normal
+}
+
+body{
+background:#000;
+color:#ffff00;
+font-family:"PressStart",monospace;
+padding:20px
+}
+
+header{
+border:2px solid #ff0000;
+padding:20px;
+margin-bottom:15px
+}
+
+nav {
+  border: 2px solid #ff0000;
+  padding: 10px;
+  margin-bottom: 20px;
+  position: sticky;
+  top: 0;
+  background: #000;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-left,
+.nav-center,
+.nav-right {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.nav-center {
+  flex: 0 1 auto;  /* permite que o grupo central se ajuste ao conteúdo */
+}
+
+.nav-right{
+display:flex;
+gap:10px;
+justify-self:end;
+flex-wrap:wrap
+}
+
+.btn{
+background:#000000;
+border:2px solid #228B22;
+color:#ffff00;
+padding:6px 12px;
+text-decoration:none
+}
+
+.btn:hover{
+  background:#ff0000;
+  border:2px solid #ff0000;
+  color:#ffff00
+}
+
+.layout{
+display:grid;
+grid-template-columns:1fr 260px;
+gap:20px;
+max-width:1200px;
+margin:auto
+}
+
+main{
+min-width: 0;
+font-family: arial,monospace;
+border:2px solid #228B22;
+padding:20px
+}
+
+h2{
+font-family:"PressStart",monospace;
+padding: 10px;
+overflow-wrap: break-word;
+}
+
+.linktexto{color:#ff0000;}
+
+.sidepanel{
+border:2px solid #228B22;
+padding-left: 10px;
+padding-right: 10px;
+}
+
+.sidepanel h3{
+background:#ff0000;
+padding:6px;
+margin-top:10px;
+margin-bottom:10px;
+text-align:center;
+}
+
+.widget{
+border:2px solid #228B22;
+padding:10px;
+margin-top:10px;
+margin-bottom:10px
+}
+
+.clock{
+border:2px solid #228B22;
+padding:10px;
+text-align:center;
+color:#ffff00
+}
+
+.youtube-embed {
+  background: #000;
+  border: 2px solid #228B22;
+  padding: 10px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.youtube-embed p {
+  color: #ffff00;
+  font-size: 12px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.youtube-embed iframe {
+  width: 100%;
+  height: 160px;
+  border: 2px solid #228B22;
+}
+
+.project-card{
+height: 250px;
+border:2px solid #ffff00;
+padding:20px;
+text-align:center
+}
+
+.project-card:hover{
+height: 250px;
+border:2px solid #ff0000;
+padding:20px;
+text-align:center
+}
+
+.games-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+margin-top:20px;
+margin-bottom:20px
+}
+
+.game-link{text-decoration:none}
+
+.game-card{
+border:2px solid #ffff00;
+padding:20px;
+text-align:center
+}
+
+.game-card:hover {
+  border-color: #ff0000;
+}
+
+.game-thumbnail {
+  width: 100%;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  font-weight: bold;
+  color: #ffff00;
+  border-bottom: 2px solid #228B22;
+}
+
+.game-title {
+  font-family:"PressStart",monospace;
+  padding: 12px;
+  text-align: center;
+  background: #000;
+  color: #ffff00;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+p{
+  color: #ffff00;
+  font-family:arial,monospace;
+  padding: 10px;
+}
+
+.pinfo{
+  text-align: center;
+  font-family:arial,monospace;
+}
+
+footer{
+border-top:2px solid #ff0000;
+margin-top:30px;
+padding:15px;
+text-align:center
+}
+
+@media(max-width:768px){
+
+nav{
+grid-template-columns:1fr;
+gap:10px
+}
+
+.nav-left,.nav-center,.nav-right{
+justify-self:start
+}
+
+.layout{
+grid-template-columns:1fr
+}
+
+.sidepanel{
+order:-1
+}
+
+}

@@ -1,0 +1,189 @@
+*{margin:0;padding:0;box-sizing:border-box}
+
+@font-face{
+font-family:"PressStart";
+src:url("../assets/fonts/PressStart2P.ttf") format("truetype");
+font-weight:normal;
+font-style:normal
+}
+
+body{
+background:#000;
+color:#ff0000;
+font-family:"PressStart",monospace;
+padding:20px
+}
+
+header{
+border:2px solid #ff0000;
+padding:20px;
+margin-bottom:15px
+}
+
+nav {
+border: 2px solid #ff0000;
+padding: 10px;
+margin-bottom: 20px;
+position: sticky;
+top: 0;
+background: #000;
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
+align-items: center;
+}
+
+.nav-left,
+.nav-center,
+.nav-right {
+display: flex;
+gap: 10px;
+flex-wrap: wrap;
+}
+
+.nav-center {
+flex: 0 1 auto;
+}
+
+.nav-right{
+display:flex;
+gap:10px;
+justify-self:end;
+flex-wrap:wrap
+}
+
+.btn{
+border:2px solid #ff0000;
+padding:6px 12px;
+color:#ff0000;
+text-decoration:none
+}
+
+.btn:hover{
+background:#ff0000;
+color:#000
+}
+
+/* ===================================================
+LINKS DE CONTATO (ESTILO DIFERENTE DOS BOTÕES)
+=================================================== */
+
+.contact-link{
+display:block;
+color:#ff0000;
+text-decoration:underline;
+font-family:arial,monospace;
+padding:4px 10px;
+margin-left:10px;
+margin-bottom:4px
+}
+
+.contact-link:hover{
+background:#ff0000;
+color:#000;
+text-decoration:none
+}
+
+/* ===================================================
+LINK CERTIFICADOS
+=================================================== */
+
+.cert-link{
+display:inline-block;
+margin-top:15px;
+border:2px solid #ff0000;
+padding:10px;
+color:#ff0000;
+text-decoration:none;
+font-family:"PressStart",monospace
+}
+
+.cert-link:hover{
+background:#ff0000;
+color:#000
+}
+
+.layout{
+display:grid;
+grid-template-columns:1fr 260px;
+gap:20px;
+max-width:1200px;
+margin:auto
+}
+
+main{
+border:2px solid #ff0000;
+padding:20px
+}
+
+h2{
+font-family:"PressStart",monospace;
+padding:10px;
+}
+
+.sidepanel{
+border:2px solid #ff0000;
+padding-left:10px;
+padding-right:10px;
+}
+
+.widget{
+border:2px solid #ff0000;
+padding:10px;
+margin-top:10px;
+margin-bottom:10px
+}
+
+.sidepanel h3{
+background:#ff0000;
+padding:6px;
+margin-top:10px;
+margin-bottom:10px;
+color:#000;
+text-align:center;
+}
+
+.clock{
+border:2px solid #ff0000;
+padding:10px;
+text-align:center;
+color:#ff0000
+}
+
+p{
+font-family:arial,monospace;
+padding:10px;
+}
+
+.pinfo{
+  text-align: center;
+  font-family:arial,monospace;
+}
+
+footer{
+border-top:2px solid #ff0000;
+margin-top:30px;
+padding:15px;
+text-align:center
+}
+
+@media(max-width:768px){
+
+nav{
+grid-template-columns:1fr;
+gap:10px
+}
+
+.nav-left,.nav-center,.nav-right{
+justify-self:start
+}
+
+.layout{
+grid-template-columns:1fr
+}
+
+.sidepanel{
+order:-1
+}
+
+}
