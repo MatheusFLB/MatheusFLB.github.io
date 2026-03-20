@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌞</text></svg>">
-    <title>Calendário</title>
+    <title>Calendar</title>
     <style>
         * {
             margin: 0;
@@ -85,10 +85,10 @@
             border: 2px solid rgba(255, 255, 255, 0.3);
         }
         
-        .verao { background-color: #FFD700; }
-        .outono { background-color: #E2725B; }
-        .inverno { background-color: #00CED1; }
-        .primavera { background-color: #9B30FF; }
+        .summer { background-color: #FFD700; }
+        .autumn { background-color: #E2725B; }
+        .winter { background-color: #00CED1; }
+        .spring { background-color: #9B30FF; }
         
         .calendar-container {
             display: grid;
@@ -97,28 +97,24 @@
             margin-bottom: 40px;
         }
         
-        /* Layout para telas grandes (acima de 1200px) - 4 colunas */
         @media (max-width: 1400px) {
             .calendar-container {
                 grid-template-columns: repeat(4, 1fr);
             }
         }
         
-        /* Layout para telas médias/grandes (992px a 1200px) - 3 colunas */
         @media (max-width: 1200px) {
             .calendar-container {
                 grid-template-columns: repeat(3, 1fr);
             }
         }
         
-        /* Layout para tablets (768px a 992px) - 2 colunas */
         @media (max-width: 992px) {
             .calendar-container {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
         
-        /* Layout para celulares (abaixo de 768px) - 1 coluna */
         @media (max-width: 768px) {
             .calendar-container {
                 grid-template-columns: 1fr;
@@ -379,7 +375,6 @@
             border: 2px solid rgba(255, 255, 255, 0.3);
         }
         
-        /* Adicionando um indicador visual do layout atual */
         .layout-indicator {
             position: fixed;
             bottom: 20px;
@@ -390,7 +385,7 @@
             font-size: 0.9rem;
             z-index: 1000;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            display: none; /* Oculto por padrão */
+            display: none;
         }
         
         @media (max-width: 1200px) and (min-width: 992px) {
@@ -403,33 +398,33 @@
 <body>
     <div class="container">
         <header>
-            <h1>Calendário 2026 Hemisfério Sul - com gradiente das estações</h1>
-            <div class="subtitle">Os <strong>ápices</strong> (meio de cada estação) estão marcados com um ponto branco pulsante no calendário. Passe o mouse sobre qualquer dia para ver sua intensidade sazonal.</div>
-            <div class="info-text">Este calendário utiliza um sistema de gradiente especial onde a intensidade da cor atinge seu máximo no <strong>ápice</strong> de cada estação (meio da estação) e vai diminuindo gradualmente em direção às extremidades (transições para outras estações).</div>
-            <a href="../index.html" class="info-title">← VOLTAR</a>
+            <h1>Calendar 2026 Southern Hemisphere - with seasonal gradient</h1>
+            <div class="subtitle">The <strong>apexes</strong> (mid‑season) are marked with a pulsating white dot on the calendar. Hover over any day to see its seasonal intensity.</div>
+            <div class="info-text">This calendar uses a special gradient system where color intensity peaks at the <strong>apex</strong> of each season (mid‑season) and gradually decreases toward the edges (transitions to other seasons).</div>
+            <a href="home.html" class="info-title">← BACK</a>
             
                 <div class="season-info">
                     <div class="season-item" style="border-top-color: #FFD700;">
-                        <strong>Verão (21/12 a 20/03)</strong><br>
-                        <span style="color: #FFD700;">Ápice: 5 de Fevereiro</span>
+                        <strong>Summer (12/21 to 03/20)</strong><br>
+                        <span style="color: #FFD700;">Apex: February 5</span>
                     </div>
                     <div class="season-item" style="border-top-color: #E2725B;">
-                        <strong>Outono (20/03 a 21/06)</strong><br>
-                        <span style="color: #E2725B;">Ápice: 4 de Maio</span>
+                        <strong>Autumn (03/20 to 06/21)</strong><br>
+                        <span style="color: #E2725B;">Apex: May 4</span>
                     </div>
                     <div class="season-item" style="border-top-color: #00CED1;">
-                        <strong>Inverno (21/06 a 22/09)</strong><br>
-                        <span style="color: #00CED1;">Ápice: 5 de Agosto</span>
+                        <strong>Winter (06/21 to 09/22)</strong><br>
+                        <span style="color: #00CED1;">Apex: August 5</span>
                     </div>
                     <div class="season-item" style="border-top-color: #9B30FF;">
-                        <strong>Primavera (22/09 a 21/12)</strong><br>
-                        <span style="color: #9B30FF;">Ápice: 4 de Novembro</span>
+                        <strong>Spring (09/22 to 12/21)</strong><br>
+                        <span style="color: #9B30FF;">Apex: November 4</span>
                     </div>
                 </div>
         </header>
         
         <div class="calendar-container" id="calendarContainer">
-            <!-- Os meses serão gerados via JavaScript -->
+            <!-- Months will be generated via JavaScript -->
         </div>
         
 
@@ -437,87 +432,87 @@
 
         
         <footer>
-            <p>Calendário de Gradiente Centrado | Hemisfério Sul | 2026</p>
-            <p>Intensidade máxima no ápice de cada estação, diminuindo nas extremidades</p>
+            <p>Centered Gradient Calendar | Southern Hemisphere | 2026</p>
+            <p>Maximum intensity at each season's apex, decreasing toward the edges</p>
         </footer>
     </div>
 
     <div class="day-tooltip" id="dayTooltip"></div>
     
     <div class="layout-indicator" id="layoutIndicator">
-        Layout: 3 meses por linha
+        Layout: 3 months per row
     </div>
 
     <script>
-        // Configurações das estações para 2026 (Hemisfério Sul)
+        // Season configurations for 2026 (Southern Hemisphere)
         const seasons = [
             {
-                name: "Verão",
-                startDate: new Date(2025, 11, 21), // 21 de dezembro de 2025
-                endDate: new Date(2026, 2, 20),    // 20 de março de 2026
-                apexDate: new Date(2026, 1, 5),    // 5 de fevereiro de 2026
-                baseColor: {r: 255, g: 215, b: 0}   // Amarelo ouro
+                name: "Summer",
+                startDate: new Date(2025, 11, 21), // December 21, 2025
+                endDate: new Date(2026, 2, 20),    // March 20, 2026
+                apexDate: new Date(2026, 1, 5),    // February 5, 2026
+                baseColor: {r: 255, g: 215, b: 0}   // Gold
             },
             {
-                name: "Outono",
-                startDate: new Date(2026, 2, 20),  // 20 de março de 2026
-                endDate: new Date(2026, 5, 21),    // 21 de junho de 2026
-                apexDate: new Date(2026, 4, 4),    // 4 de maio de 2026
-                baseColor: {r: 226, g: 114, b: 91}  // Terracota
+                name: "Autumn",
+                startDate: new Date(2026, 2, 20),  // March 20, 2026
+                endDate: new Date(2026, 5, 21),    // June 21, 2026
+                apexDate: new Date(2026, 4, 4),    // May 4, 2026
+                baseColor: {r: 226, g: 114, b: 91}  // Terracotta
             },
             {
-                name: "Inverno",
-                startDate: new Date(2026, 5, 21),  // 21 de junho de 2026
-                endDate: new Date(2026, 8, 22),    // 22 de setembro de 2026
-                apexDate: new Date(2026, 7, 5),    // 5 de agosto de 2026
-                baseColor: {r: 0, g: 206, b: 209}   // Ciano
+                name: "Winter",
+                startDate: new Date(2026, 5, 21),  // June 21, 2026
+                endDate: new Date(2026, 8, 22),    // September 22, 2026
+                apexDate: new Date(2026, 7, 5),    // August 5, 2026
+                baseColor: {r: 0, g: 206, b: 209}   // Cyan
             },
             {
-                name: "Primavera",
-                startDate: new Date(2026, 8, 22),  // 22 de setembro de 2026
-                endDate: new Date(2026, 11, 21),   // 21 de dezembro de 2026
-                apexDate: new Date(2026, 10, 4),   // 4 de novembro de 2026
-                baseColor: {r: 155, g: 48, b: 255}  // Violeta
+                name: "Spring",
+                startDate: new Date(2026, 8, 22),  // September 22, 2026
+                endDate: new Date(2026, 11, 21),   // December 21, 2026
+                apexDate: new Date(2026, 10, 4),   // November 4, 2026
+                baseColor: {r: 155, g: 48, b: 255}  // Violet
             },
             {
-                name: "Verão",
-                startDate: new Date(2026, 11, 21), // 21 de dezembro de 2026
-                endDate: new Date(2027, 2, 20),    // 20 de março de 2027
-                apexDate: new Date(2027, 1, 5),    // 5 de fevereiro de 2027
-                baseColor: {r: 255, g: 215, b: 0}   // Amarelo ouro (igual ao verão anterior)
+                name: "Summer",
+                startDate: new Date(2026, 11, 21), // December 21, 2026
+                endDate: new Date(2027, 2, 20),    // March 20, 2027
+                apexDate: new Date(2027, 1, 5),    // February 5, 2027
+                baseColor: {r: 255, g: 215, b: 0}   // Gold (same as previous summer)
             }
         ];
         
-        // Nomes dos meses
+        // Month names
         const monthNames = [
-            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
         ];
         
-        // Dias da semana
-        const dayNames = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+        // Day names
+        const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         
-        // Criar o calendário completo
+        // Create full calendar
         document.addEventListener('DOMContentLoaded', function() {
             const calendarContainer = document.getElementById('calendarContainer');
             const tooltip = document.getElementById('dayTooltip');
             
-            // Gerar calendário para cada mês
+            // Generate calendar for each month
             for (let month = 0; month < 12; month++) {
                 const monthCard = document.createElement('div');
                 monthCard.className = 'month-card';
                 
-                // Cabeçalho do mês
+                // Month header
                 const monthHeader = document.createElement('div');
                 monthHeader.className = 'month-header';
                 monthHeader.textContent = monthNames[month];
                 monthCard.appendChild(monthHeader);
                 
-                // Grid de dias
+                // Days grid
                 const daysGrid = document.createElement('div');
                 daysGrid.className = 'days-grid';
                 
-                // Adicionar cabeçalhos dos dias da semana
+                // Add weekday headers
                 for (let i = 0; i < 7; i++) {
                     const dayHeader = document.createElement('div');
                     dayHeader.className = 'day-header';
@@ -525,13 +520,13 @@
                     daysGrid.appendChild(dayHeader);
                 }
                 
-                // Obter informações sobre o mês
+                // Get month info
                 const firstDay = new Date(2026, month, 1);
                 const lastDay = new Date(2026, month + 1, 0);
                 const daysInMonth = lastDay.getDate();
                 const startingDay = firstDay.getDay();
                 
-                // Espaços vazios para os primeiros dias
+                // Empty cells for days before month start
                 for (let i = 0; i < startingDay; i++) {
                     const emptyCell = document.createElement('div');
                     emptyCell.className = 'day-cell';
@@ -539,46 +534,46 @@
                     daysGrid.appendChild(emptyCell);
                 }
                 
-                // Adicionar os dias do mês
+                // Add days of the month
                 for (let day = 1; day <= daysInMonth; day++) {
                     const dayCell = document.createElement('div');
                     dayCell.className = 'day-cell';
                     
-                    // Data atual
+                    // Current date
                     const currentDate = new Date(2026, month, day);
                     
-                    // Determinar a estação e a intensidade
+                    // Determine season and intensity
                     const seasonInfo = getSeasonForDate(currentDate);
                     const intensity = calculateSeasonIntensity(currentDate, seasonInfo);
                     
-                    // Calcular cor baseada na intensidade
+                    // Calculate color based on intensity
                     const color = calculateSeasonColor(seasonInfo, intensity);
                     
-                    // Aplicar cor de fundo com opacidade baseada na intensidade
-                    const alpha = 0.2 + (intensity * 0.8); // Opacidade de 20% a 100%
+                    // Apply background color with opacity based on intensity
+                    const alpha = 0.2 + (intensity * 0.8); // Opacity from 20% to 100%
                     dayCell.style.backgroundColor = `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha})`;
                     
-                    // Adicionar efeito de gradiente interno
+                    // Inner gradient effect
                     dayCell.style.backgroundImage = `radial-gradient(circle at center, 
                         rgba(${color.r}, ${color.g}, ${color.b}, ${alpha + 0.1}) 0%,
                         rgba(${color.r}, ${color.g}, ${color.b}, ${alpha * 0.7}) 70%,
                         rgba(${color.r}, ${color.g}, ${color.b}, ${alpha * 0.4}) 100%)`;
                     
-                    // Adicionar número do dia
+                    // Day number
                     const dayNumber = document.createElement('div');
                     dayNumber.className = 'day-number';
                     dayNumber.textContent = day;
                     dayNumber.style.color = intensity > 0.5 ? '#000' : '#fff';
                     dayCell.appendChild(dayNumber);
                     
-                    // Adicionar abreviação da estação
+                    // Season abbreviation
                     const daySeason = document.createElement('div');
                     daySeason.className = 'day-season';
                     daySeason.textContent = seasonInfo.season.name.substring(0, 3);
                     daySeason.style.color = intensity > 0.5 ? '#000' : '#fff';
                     dayCell.appendChild(daySeason);
                     
-                    // Verificar se é um ápice
+                    // Check if it's an apex day
                     const isApex = isApexDate(currentDate, seasonInfo.season);
                     
                     if (isApex) {
@@ -587,7 +582,7 @@
                         dayCell.appendChild(apexIndicator);
                     }
                     
-                    // Adicionar evento para tooltip
+                    // Tooltip event
                     dayCell.addEventListener('mouseenter', function(e) {
                         const rect = this.getBoundingClientRect();
                         tooltip.style.left = (rect.left + window.scrollX) + 'px';
@@ -600,9 +595,9 @@
                         
                         tooltip.innerHTML = `
                             <div><strong>${dateStr} - ${dayOfWeek}</strong></div>
-                            <div>Estação: ${seasonInfo.season.name}</div>
-                            <div>Intensidade sazonal: ${intensityPercent}%</div>
-                            ${isApex ? '<div style="color:#FFD700; font-weight:bold; margin-top:5px;">★ ÁPICE DA ESTAÇÃO</div>' : ''}
+                            <div>Season: ${seasonInfo.season.name}</div>
+                            <div>Seasonal intensity: ${intensityPercent}%</div>
+                            ${isApex ? '<div style="color:#FFD700; font-weight:bold; margin-top:5px;">★ SEASON APEX</div>' : ''}
                             <div class="intensity-bar">
                                 <div class="intensity-fill" style="width: ${intensityPercent}%; background: rgb(${color.r}, ${color.g}, ${color.b});"></div>
                             </div>
@@ -620,43 +615,41 @@
                 calendarContainer.appendChild(monthCard);
             }
             
-            // Criar linha do tempo
+            // Create timeline
             createTimeline();
             
-            // Adicionar evento para detectar mudanças no layout
+            // Layout indicator update
             updateLayoutIndicator();
             window.addEventListener('resize', updateLayoutIndicator);
         });
         
-        // Função para atualizar o indicador de layout
+        // Update layout indicator
         function updateLayoutIndicator() {
             const indicator = document.getElementById('layoutIndicator');
             const width = window.innerWidth;
             
             if (width >= 1200) {
-                indicator.textContent = "Layout: 4 meses por linha";
+                indicator.textContent = "Layout: 4 months per row";
                 indicator.style.display = 'block';
             } else if (width >= 992 && width < 1200) {
-                indicator.textContent = "Layout: 3 meses por linha";
+                indicator.textContent = "Layout: 3 months per row";
                 indicator.style.display = 'block';
             } else if (width >= 768 && width < 992) {
-                indicator.textContent = "Layout: 2 meses por linha";
+                indicator.textContent = "Layout: 2 months per row";
                 indicator.style.display = 'block';
             } else {
-                indicator.textContent = "Layout: 1 mês por linha";
+                indicator.textContent = "Layout: 1 month per row";
                 indicator.style.display = 'block';
             }
             
-            // Mostrar temporariamente e depois esconder
             indicator.style.opacity = '1';
             setTimeout(() => {
                 indicator.style.opacity = '0.5';
             }, 2000);
         }
         
-        // Função para determinar a estação de uma data
+        // Determine season for a given date
         function getSeasonForDate(date) {
-            // Verificar cada estação (incluindo o verão no final do ano)
             for (let season of seasons) {
                 if (date >= season.startDate && date < season.endDate) {
                     const daysInSeason = Math.floor((season.endDate - season.startDate) / (1000 * 60 * 60 * 24));
@@ -670,7 +663,7 @@
                 }
             }
             
-            // Se não encontrou, retornar o primeiro verão (para janeiro)
+            // Fallback to first summer (for January)
             const summerSeason = seasons[0];
             const daysInSeason = Math.floor((summerSeason.endDate - summerSeason.startDate) / (1000 * 60 * 60 * 24));
             const daysToApex = Math.floor((summerSeason.apexDate - summerSeason.startDate) / (1000 * 60 * 60 * 24));
@@ -682,54 +675,42 @@
             };
         }
         
-        // Função para verificar se é um dia de ápice
+        // Check if date is an apex
         function isApexDate(date, season) {
             return date.getDate() === season.apexDate.getDate() && 
                    date.getMonth() === season.apexDate.getMonth() &&
                    date.getFullYear() === season.apexDate.getFullYear();
         }
         
-        // Função para calcular a intensidade sazonal (0 a 1)
+        // Calculate seasonal intensity (0 to 1)
         function calculateSeasonIntensity(date, seasonInfo) {
             const daysSinceStart = Math.floor((date - seasonInfo.season.startDate) / (1000 * 60 * 60 * 24));
             
-            // Calcular distância normalizada do ápice (0 a 1, onde 0 = ápice)
             let distanceFromApex;
             if (daysSinceStart <= seasonInfo.daysToApex) {
-                // Antes do ápice
                 distanceFromApex = daysSinceStart / seasonInfo.daysToApex;
             } else {
-                // Depois do ápice
                 distanceFromApex = (seasonInfo.daysInSeason - daysSinceStart) / (seasonInfo.daysInSeason - seasonInfo.daysToApex);
             }
             
-            // Converter para intensidade (1 no ápice, 0 nas extremidades)
             const intensity = 1 - Math.pow(distanceFromApex, 2);
-            
             return Math.max(0, Math.min(1, intensity));
         }
         
-        // Função para calcular a cor baseada na intensidade
+        // Calculate color based on intensity (keep base color)
         function calculateSeasonColor(seasonInfo, intensity) {
-            const base = seasonInfo.season.baseColor;
-            
-            // Manter a cor base, apenas ajustar intensidade via opacidade
-            return base;
+            return seasonInfo.season.baseColor;
         }
         
-        // Função para criar a linha do tempo
+        // Create timeline
         function createTimeline() {
             const timeline = document.getElementById('seasonTimeline');
             
-            // Criar gradiente para a linha do tempo
             let gradient = "linear-gradient(to right";
-            
-            // Para cada dia do ano, calcular a cor
             const yearStart = new Date(2026, 0, 1);
             const yearEnd = new Date(2026, 11, 31);
             const totalDays = Math.floor((yearEnd - yearStart) / (1000 * 60 * 60 * 24)) + 1;
             
-            // Adicionar paradas a cada 1% para criar gradiente suave
             for (let i = 0; i <= 100; i += 1) {
                 const dayIndex = Math.floor((i / 100) * totalDays);
                 const currentDate = new Date(yearStart);
@@ -738,8 +719,6 @@
                 const seasonInfo = getSeasonForDate(currentDate);
                 const intensity = calculateSeasonIntensity(currentDate, seasonInfo);
                 const color = calculateSeasonColor(seasonInfo, intensity);
-                
-                // Aplicar intensidade via opacidade no gradiente
                 const alpha = 0.3 + (intensity * 0.7);
                 gradient += `, rgba(${color.r}, ${color.g}, ${color.b}, ${alpha}) ${i}%`;
             }
@@ -747,12 +726,12 @@
             gradient += ")";
             timeline.style.background = gradient;
             
-            // Adicionar marcadores de mudança de estação
+            // Season change markers
             const seasonChanges = [
-                { date: new Date(2026, 2, 20), name: "Outono" }, // 20 de março
-                { date: new Date(2026, 5, 21), name: "Inverno" }, // 21 de junho
-                { date: new Date(2026, 8, 22), name: "Primavera" }, // 22 de setembro
-                { date: new Date(2026, 11, 21), name: "Verão" } // 21 de dezembro
+                { date: new Date(2026, 2, 20), name: "Autumn" },
+                { date: new Date(2026, 5, 21), name: "Winter" },
+                { date: new Date(2026, 8, 22), name: "Spring" },
+                { date: new Date(2026, 11, 21), name: "Summer" }
             ];
             
             seasonChanges.forEach(change => {
@@ -769,21 +748,20 @@
                 label.textContent = change.name;
                 label.style.left = `${percent}%`;
                 
-                // Definir cor do label baseado na estação
-                if (change.name === "Verão") label.style.color = "#FFD700";
-                else if (change.name === "Outono") label.style.color = "#E2725B";
-                else if (change.name === "Inverno") label.style.color = "#00CED1";
-                else if (change.name === "Primavera") label.style.color = "#9B30FF";
+                if (change.name === "Summer") label.style.color = "#FFD700";
+                else if (change.name === "Autumn") label.style.color = "#E2725B";
+                else if (change.name === "Winter") label.style.color = "#00CED1";
+                else if (change.name === "Spring") label.style.color = "#9B30FF";
                 
                 timeline.appendChild(label);
             });
             
-            // Adicionar marcadores de ápice
+            // Apex markers
             const apexes = [
-                { date: new Date(2026, 1, 5), name: "Ápice Verão" }, // 5 de fevereiro
-                { date: new Date(2026, 4, 4), name: "Ápice Outono" }, // 4 de maio
-                { date: new Date(2026, 7, 5), name: "Ápice Inverno" }, // 5 de agosto
-                { date: new Date(2026, 10, 4), name: "Ápice Primavera" } // 4 de novembro
+                { date: new Date(2026, 1, 5), name: "Summer Apex" },
+                { date: new Date(2026, 4, 4), name: "Autumn Apex" },
+                { date: new Date(2026, 7, 5), name: "Winter Apex" },
+                { date: new Date(2026, 10, 4), name: "Spring Apex" }
             ];
             
             apexes.forEach(apex => {
@@ -800,7 +778,7 @@
             });
         }
         
-        // Função auxiliar para obter o dia do ano
+        // Helper: get day of year
         function getDayOfYear(date) {
             const start = new Date(date.getFullYear(), 0, 0);
             const diff = date - start;

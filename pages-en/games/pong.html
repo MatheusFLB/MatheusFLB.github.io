@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏓</text></svg>">
+<title>Pong</title>
+</head>
+<body style="margin:0; padding:0; display:flex; justify-content:center; align-items:center; min-height:100vh; background:#000; font-family:'PressStart', monospace; color:#fff;">
+
+<div class="container" style="text-align:center; background:rgba(0,0,0,0.9); padding:20px; border:5px solid #FF0000; border-radius:10px; max-width:95vw;">
+<h1 style="color:#FFD700; margin-bottom:20px; font-size:calc(12px + 1vw); text-shadow:2px 2px #FF0000;">🏓 PONG</h1>
+
+<div id="menu">
+<p>Choose game mode:</p>
+
+<label for="difficultySelect" style="display:block; margin-top:15px; font-size:12px; color:#FFD700;">Select difficulty:</label>
+<select id="difficultySelect" style="width:60%; padding:10px; font-family:'PressStart', monospace; font-size:12px; background:#000; color:#FF0000; border:2px solid #FF0000; cursor:pointer; outline:none; border-radius:0;">
+  <option value="3">Easy</option>
+  <option value="4" selected>Medium</option>
+  <option value="5">Hard</option>
+</select>
+
+<br>
+<button onclick="startGame(1)" style="background:#FF0000; color:#000; border:2px solid #FFD700; padding:10px 20px; font-family:'PressStart', monospace; cursor:pointer; margin:10px 5px;">1 PLAYER (VS CPU)</button>
+<button onclick="startGame(2)" style="background:#FF0000; color:#000; border:2px solid #FFD700; padding:10px 20px; font-family:'PressStart', monospace; cursor:pointer; margin:10px 5px;">2 PLAYERS</button>
+<br>
+<button onclick="window.location.href='../games.html'" style="background:#FF0000; color:#000; border:2px solid #FFD700; padding:10px 20px; font-family:'PressStart', monospace; cursor:pointer; margin:10px 5px;">
+  BACK TO GAMES
+</button>
+</div>
+
+<div id="game" style="display:none;">
+<div class="score" id="score" style="font-size:calc(12px + 0.5vw); color:#FF0000; margin:10px 0;">0 : 0</div>
+<canvas id="pongCanvas" width="600" height="400" style="display:block; background:#000; border:3px solid #FF0000; margin:20px auto; image-rendering:pixelated; width:100%; max-width:600px; height:auto;"></canvas>
+<p style="font-size:10px;">Controls: ↑↓ for player 1 | W/S for player 2 | tap screen for mobile</p>
+<button onclick="resetGame()" style="background:#FF0000; color:#000; border:2px solid #FFD700; padding:10px 20px; font-family:'PressStart', monospace; cursor:pointer; margin:10px 5px;">RESET</button>
+</div>
+
+<!-- Goal menu -->
+<div id="goalMenu" style="display:none; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:#000; border:5px solid #FF0000; padding:30px; text-align:center; border-radius:10px; color:#FFD700;">
+  <h2>GOAL!</h2>
+  <p id="goalText"></p>
+  <button onclick="continueAfterGoal()" style="background:#FF0000; color:#000; border:2px solid #FFD700; padding:10px 20px; font-family:'PressStart', monospace; cursor:pointer; margin:10px 5px;">CONTINUE</button>
+</div>
+
+</div>
+
+<script>
+const canvas = document.getElementById("pongCanvas");
+const ctx = canvas.getContext("2d");
+
+let player1Y = 0, player2Y = 0;
+let paddleWidth = 0, paddleHeight = 0, ballSize = 0;
+let ballX=0, ballY=0, ballSpeedX=0, ballSpeedY=0;
+let playerScore=0, aiScore=0;
+let keys={}, gameMode=1, gameRunning=false, ballBaseSpeed=4;
+let goalPaused = false;
+
+const difficultySelect = document.getElementById("difficultySelect");
+const goalMenu = document.getElementById("goalMenu");
+const goalText = document.getElementById("goalText");
+
+function resizeCanvas(){
+  const maxWidth = Math.min(window.innerWidth*0.95,600);
+  canvas.width = maxWidth;
+  canvas.height = maxWidth * 2/3;
+
+  paddleWidth = canvas.width*0.016;
+  paddleHeight = canvas.height*0.25;
+  ballSize = canvas.width*0.02;
+
+  player1Y = canvas.height/2 - paddleHeight/2;
+  player2Y = canvas.height/2 - paddleHeight/2;
+
+  if(!gameRunning){ ballX=canvas.width/2 - ballSize/2; ballY=canvas.height/2 - ballSize/2; }
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+// Keyboard controls
+document.addEventListener('keydown', e => keys[e.key]=true);
+document.addEventListener('keyup', e => keys[e.key]=false);
+
+// Touch controls
+canvas.addEventListener('touchstart', handleTouch, {passive:false});
+canvas.addEventListener('touchmove', handleTouch, {passive:false});
+function handleTouch(e){
+  e.preventDefault();
+  for(let t of e.touches){
+    const rect = canvas.getBoundingClientRect();
+    if(t.clientX - rect.left < canvas.width/2){
+      player1Y = t.clientY - rect.top - paddleHeight/2;
+    } else if(gameMode===2){
+      player2Y = t.clientY - rect.top - paddleHeight/2;
+    }
+  }
+}
+
+function startGame(mode){
+  gameMode=mode;
+  gameRunning=true;
+  document.getElementById("menu").style.display="none";
+  document.getElementById("game").style.display="block";
+  playerScore=0; aiScore=0;
+
+  ballBaseSpeed = parseFloat(difficultySelect.value);
+
+  resetBall();
+  requestAnimationFrame(gameLoop);
+}
+
+function resetGame(){
+  gameRunning=false;
+  document.getElementById("menu").style.display="block";
+  document.getElementById("game").style.display="none";
+  document.getElementById("score").textContent="0 : 0";
+  goalPaused = false;
+  goalMenu.style.display="none";
+}
+
+function draw(){
+  ctx.fillStyle="#000";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  ctx.fillStyle="#FFD700";
+  for(let i=0;i<canvas.height;i+=canvas.height*0.05) ctx.fillRect(canvas.width/2-1,i,2,canvas.height*0.025);
+
+  ctx.fillStyle="#228B22";
+  ctx.fillRect(0,player1Y,paddleWidth,paddleHeight);
+  ctx.fillStyle="#FF0000";
+  ctx.fillRect(canvas.width-paddleWidth,player2Y,paddleWidth,paddleHeight);
+
+  ctx.fillStyle="#FFD700";
+  ctx.fillRect(ballX,ballY,ballSize,ballSize);
+
+  document.getElementById("score").textContent = `${playerScore} : ${aiScore}`;
+}
+
+function move(){
+  if(goalPaused) return;
+
+  if(keys.ArrowUp) player1Y -=5;
+  if(keys.ArrowDown) player1Y +=5;
+  if(gameMode===2){
+    if(keys.w || keys.W) player2Y -=5;
+    if(keys.s || keys.S) player2Y +=5;
+  } else {
+    player2Y += ((ballY - (player2Y + paddleHeight/2)))*0.05;
+  }
+
+  player1Y = Math.max(0, Math.min(canvas.height - paddleHeight, player1Y));
+  player2Y = Math.max(0, Math.min(canvas.height - paddleHeight, player2Y));
+
+  ballX += ballSpeedX;
+  ballY += ballSpeedY;
+
+  if(ballY<0 || ballY+ballSize>canvas.height) ballSpeedY*=-1;
+  if(ballX<paddleWidth && ballY+ballSize>player1Y && ballY<player1Y+paddleHeight) ballSpeedX*=-1;
+  if(ballX+ballSize>canvas.width-paddleWidth && ballY+ballSize>player2Y && ballY<player2Y+paddleHeight) ballSpeedX*=-1;
+
+  if(ballX<0) { aiScore++; triggerGoal("Player 2 scored!"); }
+  if(ballX+ballSize>canvas.width) { playerScore++; triggerGoal("Player 1 scored!"); }
+}
+
+function resetBall(){
+  ballX = canvas.width/2 - ballSize/2;
+  ballY = canvas.height/2 - ballSize/2;
+  ballSpeedX = ballBaseSpeed*(Math.random()>0.5?1:-1);
+  ballSpeedY = (ballBaseSpeed*0.6)*(Math.random()>0.5?1:-1);
+}
+
+function triggerGoal(message){
+  goalPaused = true;
+  goalText.textContent = message;
+  goalMenu.style.display="block";
+}
+
+function continueAfterGoal(){
+  goalMenu.style.display="none";
+  resetBall();
+  goalPaused = false;
+}
+
+function gameLoop(){
+  if(!gameRunning) return;
+  move();
+  draw();
+  requestAnimationFrame(gameLoop);
+}
+</script>
+</body>
+</html>

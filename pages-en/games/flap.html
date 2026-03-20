@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐦</text></svg>">
+<title>Flappy</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { display:flex; justify-content:center; align-items:center; min-height:100vh; background:#000; font-family:'Press Start 2P', Arial,sans-serif; color:#fff; }
+  .container { text-align:center; background:rgba(0,0,0,0.9); padding:20px; border:5px solid #FF0000; border-radius:10px; box-shadow:0 0 20px rgba(255,0,0,0.8);}
+  h1 { color:#FFD700; margin-bottom:20px; font-size:24px; text-shadow:2px 2px #FF0000;}
+  canvas { display:block; background: linear-gradient(to bottom, #87CEEB, #E0F6FF); border:3px solid #FF0000; margin:20px auto; box-shadow:0 0 15px rgba(255,0,0,0.6); image-rendering:pixelated;}
+  .info { display:flex; justify-content:space-around; margin:15px 0; font-size:14px; color:#FFD700;}
+  .score, .status { padding:10px 20px; border-radius:5px; border:2px solid;}
+  .score { background:rgba(255,0,0,0.3); border-color:#FF0000;}
+  .status { background:rgba(0,255,0,0.2); border-color:#00FF00; color:#00FF00;}
+  .controls { margin:15px 0; font-size:12px; color:#FFD700;}
+  button { background:#FF0000; color:#000; border:2px solid #FFD700; padding:10px 20px; font-family:'Press Start 2P', Arial,sans-serif; font-size:12px; cursor:pointer; margin:10px 5px; transition:all 0.3s ease; box-shadow:0 4px 8px rgba(0,0,0,0.5);}
+  button:hover { background:#FFD700; color:#FF0000; transform:scale(1.1);}
+  button:active { transform:scale(0.95);}
+  .game-over { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.95); border:5px solid #FF0000; padding:40px; text-align:center; border-radius:10px; z-index:1000; animation:popIn 0.3s ease-out;}
+  @keyframes popIn { 0%{transform:translate(-50%,-50%) scale(0);} 100%{transform:translate(-50%,-50%) scale(1);} }
+  .game-over.show { display:block;}
+  .game-over h2 { color:#FF0000; font-size:20px; margin-bottom:20px; text-shadow:2px 2px #FFD700;}
+  .game-over p { color:#FFD700; font-size:16px; margin:10px 0;}
+  .game-over .final-score { color:#00FF00; font-size:28px; margin:20px 0;}
+  .back-link { display:inline-block; margin-top:20px; padding:10px 20px; background:#228B22; color:#FFD700; text-decoration:none; border:2px solid #FFD700; font-size:12px; transition:all 0.3s ease;}
+  .back-link:hover { background:#FFD700; color:#228B22;}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🐦 FLAPPY</h1>
+  <div class="info">
+    <div class="score">SCORE: <span id="score">0</span></div>
+    <div class="status" id="status">▶️ MENU</div>
+  </div>
+  <canvas id="gameCanvas" width="400" height="600"></canvas>
+  <div class="controls">
+    <p>🎮 CLICK ON SCREEN OR PRESS SPACE TO JUMP</p>
+  </div>
+  <div>
+    <button onclick="startGame()">START GAME</button>
+    <button onclick="pauseGame()">PAUSE</button>
+    <button onclick="resetGame()">RESET</button>
+  </div>
+  <a href="../games.html" class="back-link">← BACK TO GAMES</a>
+</div>
+
+<div id="gameOverScreen" class="game-over">
+  <h2>GAME OVER!</h2>
+  <p>You collided with a pipe!</p>
+  <div class="final-score" id="finalScore">0</div>
+  <p id="bestScore">Best Score: 0</p>
+  <button onclick="restartGame()">PLAY AGAIN</button>
+</div>
+
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+// SPEED ADJUSTMENTS
+const BIRD_SIZE = 20;
+const PIPE_WIDTH = 60;
+const PIPE_GAP = 150;
+const GRAVITY = 0.2;        // slower fall
+const JUMP_STRENGTH = -6.5;   // soft jump
+const PIPE_SPEED = 3;       // slower pipes
+
+const bird = {x:canvas.width/2, y:canvas.height/2, width:BIRD_SIZE, height:BIRD_SIZE, velocity:0, rotation:0, color:'#FFD700'};
+
+let pipes = [];
+let clouds = [];
+let score = 0;
+let bestScore = localStorage.getItem('flappyBestScore') || 0;
+let gameRunning = false;
+let gamePaused = false;
+let pipeSpawnRate = 0;
+
+// Create clouds
+function createCloud(x,y,width,height){ clouds.push({x,y,width,height,speed:Math.random()*0.5+0.2}); }
+for(let i=0;i<5;i++){ createCloud(Math.random()*canvas.width,Math.random()*canvas.height/2,Math.random()*80+40,Math.random()*30+15); }
+
+function drawCloud(cloud){ ctx.fillStyle='rgba(255,255,255,0.3)'; ctx.fillRect(cloud.x,cloud.y,cloud.width,cloud.height); }
+function drawBird(){
+  ctx.save();
+  ctx.translate(bird.x + bird.width/2, bird.y + bird.height/2);
+  ctx.rotate(bird.rotation);
+  ctx.fillStyle = bird.color;
+  ctx.fillRect(-bird.width/2, -bird.height/2, bird.width, bird.height);
+  ctx.fillStyle='#000';
+  ctx.fillRect(5,-5,5,5);
+  ctx.fillStyle='#FF0000';
+  ctx.fillRect(10,0,8,4);
+  ctx.restore();
+}
+
+function drawPipe(pipe){
+  ctx.fillStyle='#228B22';
+  ctx.fillRect(pipe.x,0,PIPE_WIDTH,pipe.topHeight);
+  ctx.fillRect(pipe.x,pipe.bottomY,PIPE_WIDTH,canvas.height-pipe.bottomY);
+  ctx.strokeStyle='#FFD700';
+  ctx.lineWidth=3;
+  ctx.strokeRect(pipe.x,0,PIPE_WIDTH,pipe.topHeight);
+  ctx.strokeRect(pipe.x,pipe.bottomY,PIPE_WIDTH,canvas.height-pipe.bottomY);
+}
+
+function createPipe(){
+  const minHeight = 50;
+  const maxHeight = canvas.height - PIPE_GAP - minHeight;
+  const topHeight = Math.random()*(maxHeight-minHeight)+minHeight;
+  pipes.push({x:canvas.width, topHeight:topHeight, bottomY:topHeight+PIPE_GAP, scored:false});
+}
+
+function updateGame(){
+  if(!gameRunning || gamePaused) return;
+
+  bird.velocity += GRAVITY;
+  bird.y += bird.velocity;
+  bird.rotation = Math.min(Math.PI/6, Math.max(-Math.PI/4, bird.velocity/10));
+
+  if(bird.y<=0){bird.y=0; bird.velocity=0;}
+  if(bird.y+bird.height>=canvas.height){ endGame(); return; }
+
+  pipes.forEach((pipe,i)=>{
+    pipe.x-=PIPE_SPEED;
+    if(bird.x<pipe.x+PIPE_WIDTH && bird.x+bird.width>pipe.x && (bird.y<pipe.topHeight || bird.y+bird.height>pipe.bottomY)){ endGame(); return; }
+    if(!pipe.scored && pipe.x+PIPE_WIDTH<bird.x){ pipe.scored=true; score++; document.getElementById('score').textContent=score; }
+    if(pipe.x+PIPE_WIDTH<0){ pipes.splice(i,1); }
+  });
+
+  pipeSpawnRate++;
+  if(pipeSpawnRate>100){ createPipe(); pipeSpawnRate=0; }
+
+  clouds.forEach(cloud=>{ cloud.x-=cloud.speed; if(cloud.x+cloud.width<0){ cloud.x=canvas.width; cloud.y=Math.random()*canvas.height/2; } });
+}
+
+function draw(){
+  ctx.fillStyle='#87CEEB';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  clouds.forEach(drawCloud);
+  pipes.forEach(drawPipe);
+  drawBird();
+  ctx.fillStyle='#FF0000';
+  ctx.font='12px Arial';
+  ctx.fillText(`SCORE: ${score}`,10,20);
+}
+
+function gameLoop(){ updateGame(); draw(); requestAnimationFrame(gameLoop); }
+
+function startGame(){
+  if(!gameRunning){
+    gameRunning=true;
+    gamePaused=false;
+    score=0;
+    bird.y=canvas.height/2;
+    bird.velocity=0;
+    pipes=[];
+    pipeSpawnRate=0;
+    document.getElementById('status').textContent='▶️ PLAYING';
+    document.getElementById('status').style.color='#00FF00';
+    document.getElementById('score').textContent='0';
+  }
+}
+
+function pauseGame(){ if(gameRunning){ gamePaused=!gamePaused; document.getElementById('status').textContent=gamePaused?'⏸️ PAUSED':'▶️ PLAYING'; document.getElementById('status').style.color=gamePaused?'#FFD700':'#00FF00'; } }
+
+function resetGame(){
+  gameRunning=false;
+  gamePaused=false;
+  score=0;
+  bird.y=canvas.height/2;
+  bird.velocity=0;
+  bird.rotation=0;
+  pipes=[];
+  pipeSpawnRate=0;
+  document.getElementById('score').textContent='0';
+  document.getElementById('status').textContent='▶️ MENU';
+  document.getElementById('status').style.color='#FFD700';
+  document.getElementById('gameOverScreen').classList.remove('show');
+}
+
+function restartGame(){ document.getElementById('gameOverScreen').classList.remove('show'); resetGame(); startGame(); }
+
+function endGame(){
+  gameRunning=false;
+  if(score>bestScore){ bestScore=score; localStorage.setItem('flappyBestScore',bestScore);}
+  document.getElementById('finalScore').textContent=score;
+  document.getElementById('bestScore').textContent=`Best Score: ${bestScore}`;
+  document.getElementById('gameOverScreen').classList.add('show');
+  document.getElementById('status').textContent='💀 GAME OVER';
+  document.getElementById('status').style.color='#FF0000';
+}
+
+// START GAME WHEN CLICKING ON SCREEN OR BUTTON
+canvas.addEventListener('click', ()=>{ 
+  if(!gameRunning){ startGame(); } 
+  else if(!gamePaused){ bird.velocity=JUMP_STRENGTH; }
+});
+
+document.addEventListener('keydown', e=>{ 
+  if(e.code==='Space'){ 
+    e.preventDefault(); 
+    if(!gameRunning){ startGame(); } 
+    else if(!gamePaused){ bird.velocity=JUMP_STRENGTH; }
+  } 
+});
+
+document.getElementById('bestScore').textContent=`Best Score: ${bestScore}`;
+gameLoop();
+</script>
+</body>
+</html>

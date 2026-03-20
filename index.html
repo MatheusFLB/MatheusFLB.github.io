@@ -1,63 +1,61 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
-        <title>Matheus Bissoli</title>
-        <link rel="stylesheet" href="css/dark-style.css">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matheus Bissoli</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+    <link rel="stylesheet" href="css/dark-style.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
 
-    <body>
-        <header>
-            <h1>Matheus Bissoli</h1>
-        </header>
+        @media (max-width: 600px) {
+            .nav-center {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .btn {
+                display: block;
+                text-align: center;
+            }
+            header h1 {
+                font-size: 1.5rem;
+            }
+        }
 
-        <nav>
-            <div class="nav-left">
-                <a href="index.html" class="btn">HOME</a>
-            </div>
-            <div class="nav-center">
-                <a href="pages/games.html" class="btn">GAMES</a>
-                <a href="pages/projetos.html" class="btn">PROJETOS</a>
-                <a href="pages/calendário.html" class="btn">CALENDÁRIO</a>
-            </div>
-            <div class="nav-right">
-                <a href="https://www.linkedin.com/in/matheusbissoli/" target="_blank" class="btn">LINKEDIN</a>
-                <a href="https://github.com/MatheusFLB" target="_blank" class="btn">GITHUB</a>
-            </div>
-        </nav>
+        header, nav {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
 
-        <div class="layout">
-            <main>
-                <h2>Bem-vindo!!</h2>
-                <p>Dados → Insights → Decisão</p>
-                <p>Esse site foi desenvolvido em HTML, CSS e JavaScript, com pitadinhas de vibe-coding.</p>
-                <p>A estética é inspirada em uma época em que o cyberespaço parecia um lugar mais livre e divertido.</p>
-                <h2>O que você vai encontrar aqui?</h2>
-                <p>Meu portifólio que reúne games, projetos pessoais e experimentos de programação publicados.</p>
-                <a href="https://github.com/MatheusFLB" target="_blank" class="contact-link">Github</a>
-                <a href="https://www.linkedin.com/in/matheusbissoli/details/certifications/" target="_blank" class="contact-link">CERTIFICADOS</a>
-                <h2>Contato</h2>
-                <a href="mailto:matheusfranciscobissoli@gmail.com" class="contact-link">E-mail</a>
-                <a href="https://www.linkedin.com/in/matheusbissoli/" target="_blank" class="contact-link">Linkedin</a>
-                <a href="assets/CV.pdf" target="_blank" download class="cert-link">CV DOWNLOAD</a>
-            </main>
+        nav {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 style="margin-bottom: 20px;">WHICH LANGUAGE DO YOU WANT?</h1>
+        <h1>QUAL LINGUAGEM VOCÊ QUER?</h1>
+    </header>
 
-            <aside class="sidepanel">
-                <h3>BRASÍLIA</h3>
-                <div class="clock" id="clock">00:00:00</div>
-                <h3>INFO</h3>
-                <div class="widget">
-                    <p class="pinfo">SOC/NOC<br>Monitoring Analyst<br>Infrastructure Monitoring<br>Observability<br>Log Analysis<br>Python<br>Data Analytics<br>GIS</p>
-                </div>
-            </aside>
+    <nav>
+        <div class="nav-left"></div>
+        <div class="nav-center">
+            <a href="pages-en/home.html" class="btn">English</a>
+            <a href="pages-br/home.html" class="btn">Português</a>
         </div>
-
-        <footer>
-            <p>Feito com café, código e algumas crises existenciais.</p>
-        </footer>
-
-        <script src="js/main.js"></script>
-    </body>
+        <div class="nav-right"></div>
+    </nav>
+    <script src="js/main.js"></script>
+</body>
 </html>
